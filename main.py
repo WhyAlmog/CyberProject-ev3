@@ -31,3 +31,5 @@ BRICK_BUTTONS = ev3.buttons
 
 # Write your program here.
 start(GENERAL_PORT, EXIT_PORT , MOTORS, SENSORS, BRICK_BUTTONS)
+
+#I really don't understand this
