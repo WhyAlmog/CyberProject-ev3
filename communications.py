@@ -323,8 +323,7 @@ def sensor_touch_wait_until_clicked(parts: list):
     return SUCCESS if RUNNING else EXIT
 
 
-
-def buttons_pressed(parts:list):
+def buttons_pressed(parts: list):
     """
     Takes in a list of buttons (as string, seperated by spaces) and 
     returns when all of them are pressed at the same time.
@@ -339,13 +338,13 @@ def buttons_pressed(parts:list):
         else:
             return ERROR_INVALID_BUTTON
 
-    while not contains(BRICK_BUTTONS.pressed(), test_buttons):
+    while not contains(BRICK_BUTTONS.pressed(), test_buttons) and RUNNING:
         pass
 
-    return SUCCESS
+    return SUCCESS if RUNNING else EXIT
 
 
-def buttons_clicked(parts:list):
+def buttons_clicked(parts: list):
     """
     Takes in a list of buttons (as string, seperated by spaces) and 
     returns when all of them are clicked (off -> on -> off) at the same time.
@@ -360,19 +359,19 @@ def buttons_clicked(parts:list):
         else:
             return ERROR_INVALID_BUTTON
 
-    while has_one(BRICK_BUTTONS.pressed(), test_buttons):
+    while has_one(BRICK_BUTTONS.pressed(), test_buttons) and RUNNING:
         pass
 
-    while not contains(BRICK_BUTTONS.pressed(), test_buttons):
+    while not contains(BRICK_BUTTONS.pressed(), test_buttons) and RUNNING:
         pass
 
-    while has_one(BRICK_BUTTONS.pressed(), test_buttons):
+    while has_one(BRICK_BUTTONS.pressed(), test_buttons) and RUNNING:
         pass
 
-    return SUCCESS
+    return SUCCESS if RUNNING else EXIT
 
 
-def button_status(parts:list):
+def button_status(parts: list):
     """
     Returns whether the button is pressed or not\n
     parts = [port]
@@ -406,7 +405,7 @@ COMMANDS = {
 }
 
 
-def start(general_port:int, exit_port:int, motors:list, sensors:list, brick_buttons:list):
+def start(general_port: int, exit_port: int, motors: list, sensors: list, brick_buttons: list):
     """Starts the server"""
     global GENERAL_CONNECTION
     global EXIT_CONNECTION
@@ -478,6 +477,3 @@ def run():
 
         data = receive(GENERAL_CONNECTION)
         print(data)
-
-
-# TODO maybe add a global RUNNING variable to all of the waiting for press operations
