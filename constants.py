@@ -1,5 +1,8 @@
 from pybricks.parameters import Stop, Button  # type:ignore
 
+GENERAL_PORT = 8070
+EXIT_PORT = 8071  # sometimes requests on GENERAL_PORT are blocking, so this port is only for exit commands
+
 ERROR_WRONG_ARGUMENT_COUNT = "Error: Wrong argument count"
 ERROR_INVALID_PORT = "Error: Invalid port"
 ERROR_INVALID_MOTOR = "Error: No motor is connected to this port"

@@ -9,9 +9,6 @@ from pybricks.media.ev3dev import SoundFile, ImageFile  # type:ignore
 from communications import start
 
 
-GENERAL_PORT = 8070
-EXIT_PORT = 8071
-
 # This program requires LEGO EV3 MicroPython v2.0 or higher.
 # Click "Open user guide" on the EV3 extension tab for more information.
 
@@ -30,4 +27,4 @@ SENSORS = {"1": TouchSensor(Port.S1),
 BRICK_BUTTONS = ev3.buttons
 
 # Write your program here.
-start(GENERAL_PORT, EXIT_PORT , MOTORS, SENSORS, BRICK_BUTTONS)
+start(MOTORS, SENSORS, BRICK_BUTTONS)

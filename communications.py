@@ -405,7 +405,7 @@ COMMANDS = {
 }
 
 
-def start(general_port: int, exit_port: int, motors: list, sensors: list, brick_buttons: list):
+def start(motors: list, sensors: list, brick_buttons: list):
     """Starts the server"""
     global GENERAL_CONNECTION
     global EXIT_CONNECTION
@@ -413,21 +413,22 @@ def start(general_port: int, exit_port: int, motors: list, sensors: list, brick_
     global SENSORS
     global BRICK_BUTTONS
 
-    print("Listening")
-
     MOTORS = motors
     SENSORS = sensors
     BRICK_BUTTONS = brick_buttons
 
     general_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     general_server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    general_server.bind(('0.0.0.0', general_port))
+    general_server.bind(('0.0.0.0', GENERAL_PORT))
     general_server.listen(5)
+
+    print("Listening")
+
     GENERAL_CONNECTION = general_server.accept()[0]
 
     exit_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     exit_server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    exit_server.bind(('0.0.0.0', exit_port))
+    exit_server.bind(('0.0.0.0', EXIT_PORT))
     exit_server.listen(5)
     EXIT_CONNECTION = exit_server.accept()[0]
 
@@ -457,8 +458,7 @@ def exit():
         pass
 
     RUNNING = False
-
-    send(EXIT_CONNECTION, "exit")
+    send(EXIT_CONNECTION, EXIT)
 
 
 def run():
@@ -466,7 +466,7 @@ def run():
 
     data = receive(GENERAL_CONNECTION)
     print(data)
-    while data != "exit":
+    while data != "exit" and RUNNING:
         parts = data.split(" ")
 
         if parts[0] in COMMANDS:
@@ -477,3 +477,5 @@ def run():
 
         data = receive(GENERAL_CONNECTION)
         print(data)
+
+
