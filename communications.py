@@ -53,7 +53,7 @@ def receive(connection: socket):
     return connection.recv(length).decode()
 
 
-def str_to_bool(string: socket):
+def str_to_bool(string: str):
     """
     Converts a string to boolean, ignores capitalization\n
     Return - value, validity (is True/False and not something else)
@@ -86,7 +86,7 @@ def motor_run_angle(parts: list):
     if parts[1] in MOTORS.keys():
         motor = MOTORS[parts[1]]
     else:
-        return ERROR_INVALID_BUTTON
+        return ERROR_INVALID_PORT
 
     if motor == None:
         return ERROR_INVALID_MOTOR
