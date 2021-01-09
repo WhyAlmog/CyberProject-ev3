@@ -117,7 +117,7 @@ def motor_run_angle(parts: list):
 def motor_run_time(parts: list):
     """
     Runs the motor at a constant speed for a given period of time.\n
-    parts = [port, time, angle, then=Stop.HOLD, wait=True]\n
+    parts = [port, speed, time, then=Stop.HOLD, wait=True]\n
     Note that if you want to specify the wait value you must specify the then value.\n
     https://pybricks.github.io/ev3-micropython/ev3devices.html#pybricks.ev3devices.Motor.motor_run_time
     """
@@ -326,7 +326,8 @@ def sensor_touch_wait_until_clicked(parts: list):
 def buttons_pressed(parts: list):
     """
     Takes in a list of buttons (as string, seperated by spaces) and 
-    returns when all of them are pressed at the same time.
+    returns when all of them are pressed at the same time.\n
+    parts = [button]
     """
     if len(parts) < 2:
         return ERROR_WRONG_ARGUMENT_COUNT
@@ -347,7 +348,8 @@ def buttons_pressed(parts: list):
 def buttons_clicked(parts: list):
     """
     Takes in a list of buttons (as string, seperated by spaces) and 
-    returns when all of them are clicked (off -> on -> off) at the same time.
+    returns when all of them are clicked (off -> on -> off) at the same time.\n
+    parts = [button]
     """
     if len(parts) < 2:
         return ERROR_WRONG_ARGUMENT_COUNT
@@ -374,7 +376,7 @@ def buttons_clicked(parts: list):
 def button_status(parts: list):
     """
     Returns whether the button is pressed or not\n
-    parts = [port]
+    parts = [button]
     """
     if len(parts) != 2:
         return ERROR_WRONG_ARGUMENT_COUNT
@@ -477,5 +479,3 @@ def run():
 
         data = receive(GENERAL_CONNECTION)
         print(data)
-
-
