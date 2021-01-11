@@ -12,7 +12,15 @@ RUNNING = True
 
 
 def contains(container: list, subset: list):
-    """Returns if all of the items in the subset are contained in the container"""
+    """Returns if all of the items in the subset are contained in the container
+
+    Args:
+        container (list): list of the container items
+        subset (list): list of items to test if included inside container
+
+    Returns:
+        bool: if all of the items inside of subset are contained in container
+    """
     for item in subset:
         inside = False
         for contain in container:
@@ -25,7 +33,15 @@ def contains(container: list, subset: list):
 
 
 def has_one(container: list, subset: list):
-    """Returns if one of the items from subset are in the container"""
+    """Tests if a list contains at least one item from a sub-list
+
+    Args:
+        container (list): list of container items
+        subset (list): list of items to tests if included in Container
+
+    Returns:
+        [type]: if at least one item from subset is inside of container
+    """
     for item in subset:
         if item in container:
             return True
@@ -33,6 +49,14 @@ def has_one(container: list, subset: list):
 
 
 def is_number(s: str):
+    """Tests if a given string represents a number
+
+    Args:
+        s (str): string representation of a number
+
+    Returns:
+        bool: if the given string represents a number or not
+    """
     try:
         float(s)
         return True
@@ -41,22 +65,41 @@ def is_number(s: str):
 
 
 def send(connection: socket, data: str):
-    """Sends data as bytes with a 4 byte header acting as the message's length (big endian)"""
+    """Sends data through the socket according to the following protocol:
+    [4 bytes, big endian - data length] + [data as byte-stream]
+
+    Args:
+        connection (socket): socket to send the data through
+        data (str): string representation of the data
+    """
     data = data.encode()
     connection.send(len(data).to_bytes(4, "big"))
     connection.send(data)
 
 
 def receive(connection: socket):
-    """Receives data according to the 4 bytes header protocol, see send function"""
+    """Receives data from the socket according to the following protocol:
+    [4 bytes, big endian - data length] + [data as byte-stream]
+
+    Args:
+        connection (socket): socket to receive the data from
+    Returns:
+        str: data read from the socket represented as a string
+    """
     length = int.from_bytes(connection.recv(4), "big")
     return connection.recv(length).decode()
 
 
 def str_to_bool(string: str):
-    """
-    Converts a string to boolean, ignores capitalization\n
-    Return - value, validity (is True/False and not something else)
+    """Converts a string to boolean (ignoring capitalization), also checks if the string is a valid boolean string.
+    invalid strings return False in the first value, example:
+    str_to_bool("test") will return False, False
+
+    Args:
+        string (str):  the string containing the boolean text
+
+    Returns:
+        tuple: first value is the value of the string, second value is the validity of the string
     """
     if string.lower() == "true":
         return True, True
@@ -67,11 +110,16 @@ def str_to_bool(string: str):
 
 
 def motor_run_angle(parts: list):
-    """
-    Runs the motor at a constant speed by a given angle.\n
-    parts = [port, speed, angle, then=Stop.HOLD, wait=True]\n
-    Note that if you want to specify the wait value you must specify the then value.\n
+    """Runs the motor at a constant speed by a given angle. 
+    Note that if you want to specify the wait value you must specify the then value.
+
     https://pybricks.github.io/ev3-micropython/ev3devices.html#pybricks.ev3devices.Motor.run_target
+
+    Args:
+        parts (list): [port, speed, angle, then=Stop.HOLD, wait=True]
+
+    Returns:
+        str: success/error
     """
 
     if len(parts) == 5:
@@ -115,11 +163,15 @@ def motor_run_angle(parts: list):
 
 
 def motor_run_time(parts: list):
-    """
-    Runs the motor at a constant speed for a given period of time.\n
-    parts = [port, speed, time, then=Stop.HOLD, wait=True]\n
-    Note that if you want to specify the wait value you must specify the then value.\n
+    """Runs the motor at a constant speed for a given period of time.
+    Note that if you want to specify the wait value you must specify the then value.
     https://pybricks.github.io/ev3-micropython/ev3devices.html#pybricks.ev3devices.Motor.motor_run_time
+
+    Args:
+        parts (list): [port, speed, time, then=Stop.HOLD, wait=True]
+
+    Returns:
+        str: success/error
     """
 
     if len(parts) == 5:
@@ -164,9 +216,13 @@ def motor_run_time(parts: list):
 
 
 def motor_run(parts: list):
-    """
-    Runs the motor indefinitely\n
-    parts = [port, speed]
+    """Runs the motor indefinitely.
+
+    Args:
+        parts (list): [port, speed]
+
+    Returns:
+        str: success/error
     """
     if len(parts) != 3:
         return ERROR_WRONG_ARGUMENT_COUNT
@@ -192,9 +248,13 @@ def motor_run(parts: list):
 
 
 def motor_stop(parts: list):
-    """
-    Stops the motor and lets it spin freely. The motor gradually stops due to friction.\n
-    parts = [port]
+    """Stops the motor and lets it spin freely. The motor gradually stops due to friction.
+
+    Args:
+        parts (list): [port]
+
+    Returns:
+        str: success/error
     """
     if len(parts) != 2:
         return ERROR_WRONG_ARGUMENT_COUNT
@@ -213,10 +273,14 @@ def motor_stop(parts: list):
 
 
 def motor_brake(parts: list):
-    """
-    Passively brakes the motor.\n
-    The motor stops due to friction, plus the voltage that is generated while the motor is still moving.\n
-    parts = [port]
+    """Passively brakes the motor.
+    The motor stops due to friction, plus the voltage that is generated while the motor is still moving.
+
+    Args:
+        parts (list): [port]
+
+    Returns:
+        str: success/error
     """
     if len(parts) != 2:
         return ERROR_WRONG_ARGUMENT_COUNT
@@ -235,9 +299,13 @@ def motor_brake(parts: list):
 
 
 def motor_hold(parts: list):
-    """
-    Stops the motor and actively holds it at its current angle.\n
-    parts = [port]
+    """Stops the motor and actively holds it at its current angle.
+
+    Args:
+        parts (list): [port]
+
+    Returns:
+        str: success/error
     """
     if len(parts) != 2:
         return ERROR_WRONG_ARGUMENT_COUNT
@@ -255,9 +323,13 @@ def motor_hold(parts: list):
 
 
 def sensor_touch(parts: list):
-    """
-    Returns the status of the touch sensor as a boolean string\n
-    parts = [port]
+    """Returns the status of the touch sensor as a boolean string
+
+    Args:
+        parts (list): [port]
+
+    Returns:
+        str: success/error
     """
     if len(parts) != 2:
         return ERROR_WRONG_ARGUMENT_COUNT
@@ -274,9 +346,13 @@ def sensor_touch(parts: list):
 
 
 def sensor_touch_wait_until_pressed(parts: list):
-    """
-    Returns when the touch sensor has been pressed\n
-    parts = [port]
+    """Returns when the touch sensor has been pressed.
+
+    Args:
+        parts (list): [port]
+
+    Returns:
+        str: success/exit/error
     """
     if len(parts) != 2:
         return ERROR_WRONG_ARGUMENT_COUNT
@@ -296,9 +372,13 @@ def sensor_touch_wait_until_pressed(parts: list):
 
 
 def sensor_touch_wait_until_clicked(parts: list):
-    """
-    Returns when the touch sensor is clicked (off -> on -> off)\n
-    parts = [port]
+    """Returns when the touch sensor is clicked (off -> on -> off)
+
+    Args:
+        parts (list): [port]
+
+    Returns:
+        str: success/exit/error
     """
     if len(parts) != 2:
         return ERROR_WRONG_ARGUMENT_COUNT
@@ -324,10 +404,14 @@ def sensor_touch_wait_until_clicked(parts: list):
 
 
 def buttons_pressed(parts: list):
-    """
-    Takes in a list of buttons (as string, seperated by spaces) and 
-    returns when all of them are pressed at the same time.\n
-    parts = [button]
+    """Takes in a list of buttons (as string, seperated by spaces) and 
+    returns when all of them are pressed at the same time.
+
+    Args:
+        parts (list): [button]
+
+    Returns:
+       str: success/exit/error
     """
     if len(parts) < 2:
         return ERROR_WRONG_ARGUMENT_COUNT
@@ -346,10 +430,14 @@ def buttons_pressed(parts: list):
 
 
 def buttons_clicked(parts: list):
-    """
-    Takes in a list of buttons (as string, seperated by spaces) and 
-    returns when all of them are clicked (off -> on -> off) at the same time.\n
-    parts = [button]
+    """Takes in a list of buttons (as string, seperated by spaces) and 
+    returns when all of them are clicked (off -> on -> off) at the same time.
+
+    Args:
+        parts (list): [button]
+
+    Returns:
+        str: success/exit/error
     """
     if len(parts) < 2:
         return ERROR_WRONG_ARGUMENT_COUNT
@@ -374,9 +462,13 @@ def buttons_clicked(parts: list):
 
 
 def button_status(parts: list):
-    """
-    Returns whether the button is pressed or not\n
-    parts = [button]
+    """Returns whether the button is pressed or not
+
+    Args:
+        parts (list): [button]
+
+    Returns:
+        str: success/exit/error
     """
     if len(parts) != 2:
         return ERROR_WRONG_ARGUMENT_COUNT
@@ -408,7 +500,13 @@ COMMANDS = {
 
 
 def start(motors: list, sensors: list, brick_buttons: list):
-    """Starts the server"""
+    """Starts both of the general and exit server and their respective threads.
+
+    Args:
+        motors (list): list of the EV3 motors
+        sensors (list): list of the EV3 sensors
+        brick_buttons (list): list of the EV3 brick buttons
+    """
     global GENERAL_CONNECTION
     global EXIT_CONNECTION
     global MOTORS
@@ -447,6 +545,9 @@ def start(motors: list, sensors: list, brick_buttons: list):
 
 
 def exit():
+    """Takes care of exiting the program. When both the center and the left brick buttons are pressed,
+    the RUNNING flag will be set to False and EXIT will be sent to the client.
+    """
     global RUNNING
 
     test_buttons = BUTTONS["CENTER"], BUTTONS["LEFT"]
@@ -464,7 +565,8 @@ def exit():
 
 
 def run():
-    """Handles communication, should be the only function receiving in the program"""
+    """Takes care of communications on the general socket and command processing.
+    Receive from the socket -> process the command -> send response."""
 
     data = receive(GENERAL_CONNECTION)
     print(data)
