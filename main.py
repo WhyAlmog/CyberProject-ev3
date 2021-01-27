@@ -14,8 +14,10 @@ from communications import start
 
 # Create your objects here.
 ev3 = EV3Brick()
-MOTORS = {"A": None,
-          "B": None,
+# Motor A - tube
+# Motor D - trapdoor
+MOTORS = {"A": Motor(Port.A),
+          "B": Motor(Port.B),
           "C": None,
           "D": Motor(Port.D)}
 
